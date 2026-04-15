@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { EventsOn } from '../../wailsjs/runtime/runtime';
 import * as api from '../../wailsjs/go/main/App';
-import type { ProxyInfoData } from '../components/ProxyInfo/ProxyInfo';
+import type { ProxyInfoData } from '../features/settings/ProxyInfo/ProxyInfo';
 
 interface ConnectionState {
   connected: boolean;
@@ -58,15 +58,15 @@ export const useConnectionStore = create<ConnectionState>((set, get) => ({
       });
     });
 
-    EventsOn('connection-lost', async () => {
-      set({ connected: false });
-      const { retryCount, maxRetries, connect } = get();
-      if (retryCount < maxRetries) {
-        set({ retryCount: retryCount + 1 });
-        await new Promise(r => setTimeout(r, 2000));
-        await connect();
+    api.GetStatus().then((status: any) => {
+      if (status) {
+        set({ 
+          connected: status.connected || false,
+          connecting: status.connecting || false,
+          useTun: status.useTun || false
+        });
       }
-    });
+    }).catch(() => {});
   },
 
   connect: async () => {

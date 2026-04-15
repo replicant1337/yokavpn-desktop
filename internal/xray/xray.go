@@ -12,8 +12,8 @@ import (
 	"sync"
 	"syscall"
 
-	"yokovpn/internal/domain"
-	"yokovpn/internal/log"
+	"YokaVPN/internal/domain"
+	"YokaVPN/internal/log"
 )
 
 type Client struct {

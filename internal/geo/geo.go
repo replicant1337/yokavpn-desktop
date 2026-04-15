@@ -14,7 +14,7 @@ import (
 )
 
 func GetLogsPath() string {
-	return filepath.Join(os.Getenv("APPDATA"), "YokoVPN", "logs")
+	return filepath.Join(os.Getenv("APPDATA"), "YokaVPN", "logs")
 }
 
 func OpenLogsFolder() error {

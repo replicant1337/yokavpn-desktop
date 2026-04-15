@@ -12,13 +12,12 @@ import (
 	"time"
 	"sync"
 
-	"github.com/gen2brain/beeep"
 	wailsruntime "github.com/wailsapp/wails/v2/pkg/runtime"
-	"yokovpn/internal/core"
-	"yokovpn/internal/domain"
-	"yokovpn/internal/ping"
-	"yokovpn/internal/utils"
-	"yokovpn/internal/xray"
+	"YokaVPN/internal/core"
+	"YokaVPN/internal/domain"
+	"YokaVPN/internal/ping"
+	"YokaVPN/internal/utils"
+	"YokaVPN/internal/xray"
 )
 
 type VPNOrchestrator struct {
@@ -28,6 +27,7 @@ type VPNOrchestrator struct {
 	
 	client   *xray.Client
 	coreMgr  *core.Manager
+	alerts   *AlertManager
 	
 	tunProcess *exec.Cmd
 	
@@ -41,10 +41,11 @@ type VPNOrchestrator struct {
 	reconnectCount int
 }
 
-func NewVPNOrchestrator(client *xray.Client, coreMgr *core.Manager) *VPNOrchestrator {
+func NewVPNOrchestrator(client *xray.Client, coreMgr *core.Manager, alerts *AlertManager) *VPNOrchestrator {
 	return &VPNOrchestrator{
 		client:  client,
 		coreMgr: coreMgr,
+		alerts:  alerts,
 		state:   domain.StateIdle,
 	}
 }
@@ -60,6 +61,25 @@ func (o *VPNOrchestrator) setState(s domain.VPNState) {
 	if o.ctx != nil {
 		wailsruntime.EventsEmit(o.ctx, "vpn-state-changed", string(s))
 	}
+}
+
+// loadClientConfig reads the client_config.json file from the application data directory.
+func (o *VPNOrchestrator) loadClientConfig() (*domain.ClientConfig, error) {
+	configPath := filepath.Join(o.lastAppDataDir, "client_config.json")
+	data, err := os.ReadFile(configPath)
+	if err != nil {
+		// If the file doesn't exist, it's not an error, just means default settings will be used.
+		if os.IsNotExist(err) {
+			return nil, nil
+		}
+		return nil, fmt.Errorf("failed to read client config: %w", err)
+	}
+
+	var config domain.ClientConfig
+	if err := json.Unmarshal(data, &config); err != nil {
+		return nil, fmt.Errorf("failed to parse client config: %w", err)
+	}
+	return &config, nil
 }
 
 func (o *VPNOrchestrator) Connect(useTun, systemProxy bool, appDataDir string) (string, error) {
@@ -78,11 +98,19 @@ func (o *VPNOrchestrator) Connect(useTun, systemProxy bool, appDataDir string) (
 	o.systemProxy = systemProxy
 	o.socksPort, o.httpPort, o.apiPort = 10808, 10809, 62789
 
+	// Load client configuration
+	clientConfig, err := o.loadClientConfig()
+	if err != nil {
+		o.rollback(fmt.Sprintf("Configuration error: %v", err))
+		return "", err
+	}
+
 	// Start Xray
 	link, err := o.client.GetActiveConfig()
 	if err != nil { o.rollback(err.Error()); return "", err }
 
-	cfg, _ := ping.BuildXrayConfig(link, o.socksPort, o.httpPort, o.apiPort, "", "")
+	cfg, err := ping.BuildXrayConfig(link, o.socksPort, o.httpPort, o.apiPort, "", "")
+	if err != nil { o.rollback(fmt.Sprintf("Failed to build Xray config: %v", err)); return "", err}
 	cfgJSON, _ := json.Marshal(cfg)
 	configPath := filepath.Join(appDataDir, "xray_config.json")
 	os.WriteFile(configPath, cfgJSON, 0644)
@@ -95,16 +123,41 @@ func (o *VPNOrchestrator) Connect(useTun, systemProxy bool, appDataDir string) (
 	// Start TUN or Proxy
 	if useTun {
 		tun2Path := o.coreMgr.GetTunPath()
-		o.tunProcess = exec.Command(tun2Path, "--tun", "gatewaytun", "--proxy", fmt.Sprintf("socks5://127.0.0.1:%d", o.socksPort), "--setup", "--dns", "virtual")
+		tunArgs := []string{"--proxy", fmt.Sprintf("socks5://127.0.0.1:%d", o.socksPort), "--setup", "--dns", "virtual"}
+
+		if runtime.GOOS == "windows" {
+			defaultTunDevice := "gatewaytun" // Default to Wintun name
+			if clientConfig != nil && clientConfig.AdapterType == "tap" {
+				if clientConfig.AdapterName != "" {
+					tunArgs = append(tunArgs, "--tun", clientConfig.AdapterName)
+				} else {
+					// Use a default TAP adapter name if none is provided
+					tunArgs = append(tunArgs, "--tun", "tap0") 
+				}
+			} else {
+				// Use default Wintun name if not TAP or config is missing/invalid
+				tunArgs = append(tunArgs, "--tun", defaultTunDevice)
+			}
+		} else {
+			// For non-Windows, use the default tun device name
+			tunArgs = append(tunArgs, "--tun", "tun0")
+		}
+
+		o.tunProcess = exec.Command(tun2Path, tunArgs...)
 		if runtime.GOOS == "windows" { o.tunProcess.SysProcAttr = &syscall.SysProcAttr{HideWindow: true} }
 		o.tunProcess.Dir = o.coreMgr.GetTunDir()
-		o.tunProcess.Start()
+		if err := o.tunProcess.Start(); err != nil {
+			o.rollback(fmt.Sprintf("Failed to start tun2proxy: %v", err))
+			return "", err
+		}
 	} else if systemProxy {
 		utils.EnableSystemProxy(fmt.Sprintf("127.0.0.1:%d", o.httpPort))
 	}
 
 	o.setState(domain.StateConnected)
-	beeep.Notify("YokoVPN", "Connected", "")
+	if o.alerts != nil {
+		o.alerts.Notify("YokaVPN", "Connected")
+	}
 	go o.monitor()
 	return "Connected", nil
 }
@@ -151,7 +204,9 @@ func (o *VPNOrchestrator) ForceCleanup() {
 func (o *VPNOrchestrator) rollback(reason string) {
 	o.ForceCleanup()
 	o.setState(domain.StateError)
-	beeep.Alert("YokoVPN", "Error: "+reason, "")
+	if o.alerts != nil {
+		o.alerts.Alert("YokaVPN", "Error: "+reason)
+	}
 }
 
 func (o *VPNOrchestrator) monitor() {

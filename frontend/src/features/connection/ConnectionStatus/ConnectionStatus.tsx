@@ -1,5 +1,5 @@
 import styles from './ConnectionStatus.module.css';
-import Loader from '../Loader/Loader';
+import Loader from '../../ui/Loader';
 
 interface ConnectionStatusProps {
   text?: string;

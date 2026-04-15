@@ -1,87 +1,55 @@
 :root {
-  --bg-primary: #0a0a0a;
-  --bg-secondary: #141414;
-  --bg-tertiary: #1e1e1e;
-  --border: #2a2a2a;
-  --text-primary: #ffffff;
-  --text-secondary: #a0a0a0;
+  /* Colors - Brand */
+  --color-primary: #3b82f6;
+  --color-primary-hover: #2563eb;
+  --color-success: #22c55e;
+  --color-success-hover: #16a34a;
+  --color-danger: #ef4444;
+  --color-danger-hover: #dc2626;
+  --color-warning: #f59e0b;
+
+  /* Colors - Backgrounds */
+  --bg-app: #0a0a0a;
+  --bg-card: rgba(255, 255, 255, 0.04);
+  --bg-card-hover: rgba(255, 255, 255, 0.07);
+  --bg-surface: rgba(255, 255, 255, 0.03);
+  --bg-input: rgba(255, 255, 255, 0.05);
+
+  /* Colors - Text */
+  --text-main: #ffffff;
+  --text-dimmed: #888888;
   --text-muted: #666666;
-  --accent-green: #00ff88;
-  --accent-red: #ff4d4d;
-  --accent-blue: #3b82f6;
-  --accent-gray: #71717a;
-  
-  /* Typography Scale */
-  --font-xs: 11px;
-  --font-sm: 12px;
-  --font-md: 14px;
-  --font-lg: 16px;
-  --font-xl: 20px;
+  --text-placeholder: #444444;
+
+  /* Transitions */
+  --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+  /* Effects */
+  --shadow-main: 0 10px 30px rgba(0, 0, 0, 0.4);
+  --glass-blur: blur(20px);
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  -webkit-user-select: none;
-  user-select: none;
 }
 
 body {
-  margin: 0;
-  background: var(--bg-primary);
-  /* Use Inter as primary, Noto Color Emoji for flags/emojis */
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Color Emoji', sans-serif;
-  color: var(--text-primary);
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
+  font-family: 'Inter', -apple-system, system-ui, sans-serif;
+  font-size: 14px;
+  background-color: var(--bg-app);
+  color: var(--text-main);
   overflow: hidden;
-  
-  /* Best rendering for fonts */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
-  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
-  
-  /* Global text spacing */
-  letter-spacing: -0.011em;
-  line-height: 1.5;
+  user-select: none;
 }
 
-#app {
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-}
-
-button, input, textarea, select {
+button {
   font-family: inherit;
-  font-size: inherit;
-  outline: none;
-  letter-spacing: inherit;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-weight: 600;
-  letter-spacing: -0.022em;
-}
-
-/* Scrollbar styling */
-::-webkit-scrollbar {
-  width: 4px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--text-muted);
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }

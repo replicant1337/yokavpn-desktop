@@ -1,6 +1,6 @@
 import { useState } from 'preact/hooks';
 import styles from './ModeSelector.module.css';
-import { useTranslation } from '../../i18n';
+import { useTranslation } from '../../../i18n';
 
 interface ModeSelectorProps {
   useTun?: boolean;

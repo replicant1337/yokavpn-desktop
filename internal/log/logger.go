@@ -32,11 +32,11 @@ var loggers = make(map[string]*Logger)
 var defaultLogger *Logger
 
 func init() {
-	dir := filepath.Join(os.Getenv("APPDATA"), "YokoVPN", "logs")
+	dir := filepath.Join(os.Getenv("APPDATA"), "YokaVPN", "logs")
 	os.MkdirAll(dir, 0755)
 
 	var err error
-	defaultLogger, err = NewLogger("YokoVPN", dir)
+	defaultLogger, err = NewLogger("YokaVPN", dir)
 	if err != nil {
 		fmt.Printf("Failed to create logger: %v\n", err)
 	}
@@ -156,5 +156,5 @@ func Error(format string, args ...interface{}) {
 }
 
 func GetLogDir() string {
-	return filepath.Join(os.Getenv("APPDATA"), "YokoVPN", "logs")
+	return filepath.Join(os.Getenv("APPDATA"), "YokaVPN", "logs")
 }

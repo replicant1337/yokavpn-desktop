@@ -53,3 +53,9 @@ type SubscriptionInfo struct {
 	ExpiresAt string    `json:"expires_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 }
+
+// ClientConfig represents the application-wide configuration
+type ClientConfig struct {
+	AdapterType string `json:"adapter_type"`
+	AdapterName string `json:"adapter_name"`
+}

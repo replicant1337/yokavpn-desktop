@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"yokovpn/internal/domain"
-	"yokovpn/internal/subscription"
+	"YokaVPN/internal/domain"
+	"YokaVPN/internal/subscription"
 )
 
 type SubscriptionManager struct {

@@ -1,6 +1,6 @@
-import styles from '../MainView.module.css';
-import ConnectButton from '../../../components/ConnectButton/ConnectButton';
-import type { StatsData } from '../../../components/StatsBar/StatsBar';
+import styles from '../../views/MainView/MainView.module.css';
+import ConnectButton from './ConnectButton/ConnectButton';
+import type { StatsData } from '../stats/StatsBar/StatsBar';
 
 interface StatusAreaProps {
   connected: boolean;

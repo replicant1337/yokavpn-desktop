@@ -9,14 +9,14 @@ import (
 	"sort"
 	"time"
 
-	"yokovpn/internal/domain"
-	"yokovpn/internal/core"
-	"yokovpn/internal/geo"
-	"yokovpn/internal/log"
-	"yokovpn/internal/ping"
-	"yokovpn/internal/subscription"
-	"yokovpn/internal/usecase"
-	"yokovpn/internal/xray"
+	"YokaVPN/internal/core"
+	"YokaVPN/internal/domain"
+	"YokaVPN/internal/geo"
+	"YokaVPN/internal/log"
+	"YokaVPN/internal/ping"
+	"YokaVPN/internal/subscription"
+	"YokaVPN/internal/usecase"
+	xray "YokaVPN/internal/xray"
 
 	wailsruntime "github.com/wailsapp/wails/v2/pkg/runtime"
 )
@@ -27,22 +27,25 @@ type App struct {
 	subMgr  *usecase.SubscriptionManager
 	coreMgr *core.Manager
 	vpnSvc  *usecase.VPNOrchestrator
+	alerts  *usecase.AlertManager
 	logger  *log.Logger
 }
 
 func NewApp() *App {
 	configDir, _ := os.UserConfigDir()
-	appDataDir := filepath.Join(configDir, "YokoVPN")
+	appDataDir := filepath.Join(configDir, "YokaVPN")
 	logger, _ := log.NewLogger("app", filepath.Join(appDataDir, "logs"))
 	client := xray.NewClient()
 	coreMgr := core.NewManager(appDataDir)
-	vpnSvc := usecase.NewVPNOrchestrator(client, coreMgr)
+	alerts := usecase.NewAlertManager(appDataDir)
+	vpnSvc := usecase.NewVPNOrchestrator(client, coreMgr, alerts)
 
 	return &App{
 		client:  client,
 		subMgr:  usecase.NewSubscriptionManager(),
 		coreMgr: coreMgr,
 		vpnSvc:  vpnSvc,
+		alerts:  alerts,
 		logger:  logger,
 	}
 }
@@ -175,10 +178,10 @@ func (a *App) GetStatus() map[string]interface{} {
 
 func (a *App) AppDataDir() string {
 	configDir, _ := os.UserConfigDir()
-	return filepath.Join(configDir, "YokoVPN")
+	return filepath.Join(configDir, "YokaVPN")
 }
 
-func (a *App) GetStats() *domain.Stats           { return a.client.GetStats() }
+func (a *App) GetStats() *domain.Stats         { return a.client.GetStats() }
 func (a *App) GetOutboundIP() string           { return geo.GetOutboundIP() }
 func (a *App) SetActiveServer(index int) error { return a.client.SetActiveServer(index) }
 

@@ -6,12 +6,12 @@
   IgnorableNamespaces="uap rescap">
 
   <Identity
-    Name="ShadowDev.Bastion"
-    Publisher="CN=SHADOW-DEV-REPLACE-ME"
+    Name="ShadowDev.YokaVPN"
+    Publisher="CN=ShadowDev"
     Version="1.0.0.0" />
 
   <Properties>
-    <DisplayName>Bastion</DisplayName>
+    <DisplayName>YokaVPN</DisplayName>
     <PublisherDisplayName>Shadow Dev</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -26,11 +26,11 @@
 
   <Applications>
     <Application Id="App"
-      Executable="bastion.exe"
+      Executable="YokaVPN.exe"
       EntryPoint="Windows.FullTrustApplication">
       <uap:VisualElements
-        DisplayName="Bastion"
-        Description="Modern VPN Bastion for Windows"
+        DisplayName="YokaVPN"
+        Description="Modern VPN Client for Windows"
         BackgroundColor="transparent"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png">

@@ -1,5 +1,5 @@
 import styles from './ConnectButton.module.css';
-import { useTranslation } from '../../i18n';
+import { useTranslation } from '../../../i18n';
 
 interface ConnectButtonProps {
   connected?: boolean;
@@ -19,7 +19,7 @@ export default function ConnectButton({
   const { t } = useTranslation();
   
   const statusClass = isDisconnecting
-    ? styles.connecting // Use same style as connecting for now
+    ? styles.connecting 
     : connecting 
       ? styles.connecting 
       : connected 
@@ -27,9 +27,7 @@ export default function ConnectButton({
         : styles.disconnected;
 
   const getLabel = () => {
-    if (isDisconnecting) {
-      return t('app.disconnecting');
-    }
+    if (isDisconnecting) return t('app.disconnecting');
     if (connecting) {
       if (statusText) {
         const translated = t(statusText);
@@ -49,16 +47,16 @@ export default function ConnectButton({
       >
         <div className={styles.ripple}></div>
         <div className={styles.content}>
-          {connecting ? (
-            <svg className={styles.iconSpin} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-              <path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83" />
+          {connecting || isDisconnecting ? (
+            <svg className={styles.iconSpin} viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="3">
+              <path d="M1 4v6h6M23 20v-6h-6M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15" />
             </svg>
           ) : connected ? (
-            <svg className={styles.icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-              <rect x="6" y="6" width="12" height="12" rx="2" fill="currentColor" />
+            <svg className={styles.icon} viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="3">
+              <rect x="6" y="6" width="12" height="12" rx="2" fill="#000000" />
             </svg>
           ) : (
-            <svg className={styles.icon} viewBox="0 0 24 24" fill="currentColor">
+            <svg className={styles.icon} viewBox="0 0 24 24" fill="#000000">
               <path d="M8 5v14l11-7z" />
             </svg>
           )}

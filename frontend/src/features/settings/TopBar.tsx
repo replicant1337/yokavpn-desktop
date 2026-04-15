@@ -1,6 +1,6 @@
-import styles from '../MainView.module.css';
-import { useTranslation } from '../../../i18n';
-import ModeSelector from '../../../components/ModeSelector/ModeSelector';
+import styles from '../../views/MainView/MainView.module.css';
+import { useTranslation } from '../../i18n';
+import ModeSelector from './ModeSelector/ModeSelector';
 
 interface TopBarProps {
   useTun: boolean;

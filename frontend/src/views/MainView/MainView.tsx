@@ -1,11 +1,11 @@
 import styles from './MainView.module.css';
-import type { ServerData } from '../../components/ServerList/ServerList';
-import type { StatsData } from '../../components/StatsBar/StatsBar';
-import type { ProxyInfoData } from '../../components/ProxyInfo/ProxyInfo';
+import type { ServerData } from '../../features/servers/ServerList/ServerList';
+import type { StatsData } from '../../features/stats/StatsBar/StatsBar';
+import type { ProxyInfoData } from '../../features/settings/ProxyInfo/ProxyInfo';
 
-import TopBar from './components/TopBar';
-import StatusArea from './components/StatusArea';
-import ServerCard from './components/ServerCard';
+import TopBar from '../../features/settings/TopBar';
+import StatusArea from '../../features/connection/StatusArea';
+import ServerCard from '../../features/servers/ServerCard';
 
 interface MainViewProps {
   connected: boolean;

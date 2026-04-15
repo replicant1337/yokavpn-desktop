@@ -1,4 +1,4 @@
-module yokovpn
+module YokaVPN
 
 go 1.26
 

@@ -1,7 +1,7 @@
 import styles from './ServerList.module.css';
 import Flag from 'react-flagpack';
-import Loader from '../Loader/Loader';
-import { useTranslation } from '../../i18n';
+import Loader from '../../ui/Loader';
+import { useTranslation } from '../../../i18n';
 
 export interface ServerData {
   name: string;

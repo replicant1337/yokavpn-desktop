@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=YokaVPN
+Comment=VPN Client
+Exec=yokavpn
+Icon=yokavpn
+Terminal=false
+Type=Application
+Categories=Network;Security;VPN;
+Keywords=vpn;tunnel;proxy;
+StartupWMClass=YokaVPN

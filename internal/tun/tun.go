@@ -8,7 +8,7 @@ import (
 	"strings"
 	"sync"
 
-	"yokovpn/internal/log"
+	"YokaVPN/internal/log"
 )
 
 type TunManager struct {

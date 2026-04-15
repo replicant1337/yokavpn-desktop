@@ -2,7 +2,7 @@
   "app": {
     "title": "Xray Client",
     "connect": "Подключиться",
-    "disconnect": "Отключиться",
+    "disconnect": "Подключен",
     "disconnecting": "Отключение...",
     "connecting": "Подключение...",
     "status_ready": "Нажмите для старта",

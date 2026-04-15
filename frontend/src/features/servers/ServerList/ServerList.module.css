@@ -78,8 +78,6 @@
   display: flex;
   align-items: center;
   gap: 5px;
-  letter-spacing: 0.4px;
-  text-transform: uppercase;
 }
 
 .badge::before {
@@ -113,9 +111,8 @@
 .latencyError {
   font-size: 9px;
   font-weight: 800;
-  color: var(--accent-red);
+  color: var(--color-danger);
   opacity: 0.8;
-  text-transform: uppercase;
 }
 
 .pingBtn {

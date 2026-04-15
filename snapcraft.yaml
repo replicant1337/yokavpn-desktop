@@ -1,0 +1,39 @@
+name: yokavpn
+version: '1.0.0'
+summary: VPN Client for Windows
+description: |
+  YokaVPN - A modern VPN client with TUN/TAP support
+  
+  Features:
+  - Multiple server selection
+  - TUN and Proxy modes
+  - System proxy integration
+  - Real-time statistics
+
+architectures:
+  - amd64
+
+base: core22
+confinement: devmode
+grade: stable
+
+parts:
+  yokavpn:
+    plugin: go
+    source: .
+    go-buildflags:
+      - -ldflags=-H=windowsgui
+    build-packages:
+      - gcc
+      - libgtk-3-dev
+    stage-packages:
+      - libgtk-3-0
+
+apps:
+  yokavpn:
+    command: yokavpn
+    desktop: share/applications/yokavpn.desktop
+    plugs:
+      - network
+      - network-control
+      - firewall-control

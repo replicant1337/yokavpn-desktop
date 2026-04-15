@@ -12,9 +12,9 @@ import (
 	"strings"
 	"time"
 
-	"yokovpn/internal/domain"
-	"yokovpn/internal/log"
-	"yokovpn/internal/utils"
+	"YokaVPN/internal/domain"
+	"YokaVPN/internal/log"
+	"YokaVPN/internal/utils"
 )
 
 type RemnawaveClient struct {

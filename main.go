@@ -7,7 +7,7 @@ import (
 	"runtime"
 	"syscall"
 
-	"yokovpn/internal/utils"
+	"YokaVPN/internal/utils"
 
 	"github.com/getlantern/systray"
 	"github.com/wailsapp/wails/v2"
@@ -43,10 +43,10 @@ func main() {
 	go func() {
 		systray.Run(func() {
 			systray.SetIcon(icon)
-			systray.SetTitle("YokoVPN")
-			systray.SetTooltip("YokoVPN")
+			systray.SetTitle("YokaVPN")
+			systray.SetTooltip("YokaVPN")
 
-			mShow := systray.AddMenuItem("Show YokoVPN", "Show the main window")
+			mShow := systray.AddMenuItem("Show YokaVPN", "Show the main window")
 			mHide := systray.AddMenuItem("Hide to Tray", "Hide the main window")
 			systray.AddSeparator()
 			mQuit := systray.AddMenuItem("Quit", "Quit the application")
@@ -76,7 +76,7 @@ func main() {
 	}()
 
 	err := wails.Run(&options.App{
-		Title:  "YokoVPN",
+		Title:  "YokaVPN",
 		Width:  380,
 		Height: 640,
 		MinWidth: 320,
@@ -94,7 +94,7 @@ func main() {
 		},
 		// Single Instance Lock
 		SingleInstanceLock: &options.SingleInstanceLock{
-			UniqueId: "yokovpn-unique-id-2026",
+			UniqueId: "yokavpn-unique-id-2026",
 			OnSecondInstanceLaunch: func(secondInstanceData options.SecondInstanceData) {
 				if app.ctx != nil {
 					wailsruntime.WindowShow(app.ctx)

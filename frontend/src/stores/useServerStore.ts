@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { EventsOn } from '../../wailsjs/runtime/runtime';
 import * as api from '../../wailsjs/go/main/App';
-import type { ServerData } from '../components/ServerList/ServerList';
+import type { ServerData } from '../features/servers/ServerList/ServerList';
 
 interface ServerState {
   servers: ServerData[];

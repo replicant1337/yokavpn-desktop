@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import * as api from '../../wailsjs/go/main/App';
-import type { StatsData } from '../components/StatsBar/StatsBar';
+import type { StatsData } from '../features/stats/StatsBar/StatsBar';
 
 interface StatsState {
   stats: StatsData;

@@ -1,5 +1,5 @@
 import styles from './ProxyInfo.module.css';
-import { useTranslation } from '../../i18n';
+import { useTranslation } from '../../../i18n';
 
 export interface ProxyInfoData {
   ip: string;

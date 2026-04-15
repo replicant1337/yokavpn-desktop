@@ -18,8 +18,8 @@ import (
 	"runtime"
 
 	"golang.org/x/net/proxy"
-	"yokovpn/internal/domain"
-	"yokovpn/internal/log"
+	"YokaVPN/internal/domain"
+	"YokaVPN/internal/log"
 )
 
 var pingLogger *log.Logger
@@ -34,7 +34,7 @@ func findXrayPath() string {
 	paths := []string{
 		filepath.Join(exeDir, "core", "xray.exe"),
 		filepath.Join(exeDir, "..", "core", "xray.exe"),
-		filepath.Join(os.Getenv("APPDATA"), "YokoVPN", "core", "xray.exe"),
+		filepath.Join(os.Getenv("APPDATA"), "YokaVPN", "core", "xray.exe"),
 		"build/bin/core/xray.exe",
 		"build/bin/xray.exe",
 		"xray.exe",
@@ -63,7 +63,7 @@ func getAssetDir() string {
 		return abs
 	}
 
-	appDataAsset := filepath.Join(os.Getenv("APPDATA"), "YokoVPN", "core")
+	appDataAsset := filepath.Join(os.Getenv("APPDATA"), "YokaVPN", "core")
 	return appDataAsset
 }
 
