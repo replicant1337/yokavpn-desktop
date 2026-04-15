@@ -1,0 +1,56 @@
+import styles from '../MainView.module.css';
+import { useTranslation } from '../../../i18n';
+import Flag from 'react-flagpack';
+import type { ServerData } from '../../../components/ServerList/ServerList';
+
+interface ServerCardProps {
+  activeServer?: ServerData;
+  connected: boolean;
+  onOpenServers: () => void;
+}
+
+const emojiToCode: Record<string, string> = {
+  "🇺🇸": "US", "🇬🇧": "GB", "🇩🇪": "DE", "🇫🇷": "FR", "🇳🇱": "NL",
+  "🇷🇺": "RU", "🇺🇦": "UA", "🇰🇿": "KZ", "🇯🇵": "JP", "🇰🇷": "KR",
+  "🇸🇬": "SG", "🇭🇰": "HK", "🇹🇼": "TW", "🇦🇺": "AU", "🇨🇦": "CA",
+  "🇧🇷": "BR", "🇮🇳": "IN", "🇹🇷": "TR", "🇦🇪": "AE", "🇫🇮": "FI"
+};
+
+export default function ServerCard({ activeServer, connected, onOpenServers }: ServerCardProps) {
+  const { t, getCountryName } = useTranslation();
+  const code = activeServer ? emojiToCode[activeServer.flag] : null;
+
+  return (
+    <div className={styles.bottomSection}>
+      <div className={styles.serverCard} onClick={onOpenServers}>
+        {code ? (
+          <div className={styles.flagBox}>
+            <Flag code={code} size="l" />
+          </div>
+        ) : (
+          <div className={styles.noFlag}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20M2 12h20"/>
+            </svg>
+          </div>
+        )}
+        <div className={styles.serverInfo}>
+          <div className={styles.serverNameRow}>
+            <span className={styles.serverName}>
+              {activeServer ? getCountryName(activeServer.flag, activeServer.name) : t('app.no_servers')}
+            </span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+              <path d="M9 18l6-6-6-6" />
+            </svg>
+          </div>
+          <span className={styles.serverSub}>{activeServer ? (activeServer.transport?.toUpperCase() || 'VLESS') : '---'}</span>
+        </div>
+        <div className={styles.serverLatency}>
+          <span className={connected ? styles.latValue : styles.latDimmed}>
+            {(activeServer?.latency_ms ?? 0) > 0 ? `${activeServer?.latency_ms} ms` : '-- ms'}
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}

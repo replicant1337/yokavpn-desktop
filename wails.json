@@ -1,0 +1,19 @@
+{
+  "$schema": "https://wails.io/schemas/config.v2.json",
+  "name": "YokoVPN",
+  "outputfilename": "yokovpn",
+  "frontend:install": "npm install",
+  "frontend:build": "npm run build",
+  "frontend:dev:watcher": "npm run dev",
+  "frontend:dev:serverUrl": "auto",
+  "author": {
+    "name": "shadow",
+    "email": "you@example.com"
+  },
+  "info": {
+    "companyName": "Shadow Dev",
+    "productName": "YokoVPN",
+    "copyright": "Copyright 2026",
+    "comments": "VPN client for Windows"
+  }
+}

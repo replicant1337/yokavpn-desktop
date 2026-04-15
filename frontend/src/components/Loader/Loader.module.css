@@ -1,0 +1,39 @@
+.loader {
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.small {
+  width: 14px;
+  height: 14px;
+  border-width: 2px;
+  border-style: solid;
+}
+
+.medium {
+  width: 24px;
+  height: 24px;
+  border-width: 3px;
+  border-style: solid;
+}
+
+.large {
+  width: 32px;
+  height: 32px;
+  border-width: 3px;
+  border-style: solid;
+}
+
+.green {
+  border-color: var(--bg-tertiary);
+  border-top-color: var(--accent-green);
+}
+
+.white {
+  border-color: rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
