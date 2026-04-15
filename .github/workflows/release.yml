@@ -34,14 +34,12 @@ jobs:
         with:
           go-version: '1.26'
       - name: Install Wails
-        run: |
-          go install github.com/wailsapp/wails/v2/cmd/wails@latest
-          go install github.com/wailsapp/wails/v2/cmd/wails
+        run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
         shell: pwsh
       - name: Build
         run: |
-          $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
-          wails build -ldflags "-H=windowsgui"
+          $wailsPath = "$env:USERPROFILE\go\bin\wails.exe"
+          & $wailsPath build -ldflags "-H=windowsgui"
         shell: pwsh
       - name: Upload Release Asset
         uses: actions/upload-release-asset@v1
@@ -67,11 +65,9 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.1-dev
       - name: Install Wails
-        run: |
-          go install github.com/wailsapp/wails/v2/cmd/wails@latest
-          echo "$HOME/go/bin" >> $GITHUB_PATH
+        run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
       - name: Build
-        run: wails build
+        run: ~/go/bin/wails build
       - name: Upload Release Asset
         uses: actions/upload-release-asset@v1
         with:
@@ -92,11 +88,9 @@ jobs:
         with:
           go-version: '1.26'
       - name: Install Wails
-        run: |
-          go install github.com/wailsapp/wails/v2/cmd/wails@latest
-          echo "$HOME/go/bin" >> $GITHUB_PATH
+        run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
       - name: Build
-        run: wails build
+        run: ~/go/bin/wails build
       - name: Upload Release Asset
         uses: actions/upload-release-asset@v1
         with:
