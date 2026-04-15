@@ -76,12 +76,12 @@ func main() {
 	}()
 
 	err := wails.Run(&options.App{
-		Title:  "YokaVPN",
-		Width:  380,
-		Height: 640,
-		MinWidth: 320,
+		Title:     "YokaVPN - Full VPN",
+		Width:     380,
+		Height:    640,
+		MinWidth:  320,
 		MinHeight: 500,
-		MaxWidth: 450,
+		MaxWidth:  450,
 		MaxHeight: 800,
 		AssetServer: &assetserver.Options{
 			Assets: assets,

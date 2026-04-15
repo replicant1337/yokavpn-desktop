@@ -38,20 +38,18 @@ func NewAlertManager(appDataDir string) *AlertManager {
 }
 
 func (m *AlertManager) Notify(title, message string) {
-	// Always ensure YokaVPN is the title to avoid DefaultAppName
-	displayTitle := "YokaVPN"
+	displayTitle := "YokaVPN - Full VPN"
 	if title != "" && title != "YokaVPN" {
-		displayTitle = "YokaVPN - " + title
+		displayTitle = "YokaVPN - Full VPN - " + title
 	}
 
-	// Use beeep with explicit icon path
 	_ = beeep.Notify(displayTitle, message, m.iconPath)
 }
 
 func (m *AlertManager) Alert(title, message string) {
-	displayTitle := "YokaVPN"
+	displayTitle := "YokaVPN - Full VPN"
 	if title != "" && title != "YokaVPN" {
-		displayTitle = "YokaVPN - " + title
+		displayTitle = "YokaVPN - Full VPN - " + title
 	}
 	_ = beeep.Alert(displayTitle, message, m.iconPath)
 }
